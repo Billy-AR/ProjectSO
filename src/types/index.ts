@@ -1,4 +1,3 @@
-// src/types/index.ts
 export interface Process {
   id: string;
   name: string;
@@ -11,6 +10,7 @@ export interface Process {
   endTime?: number;
   waitingTime?: number;
   turnaroundTime?: number;
+  executeTime?: number; // Added for Round Robin visualization
 }
 
 export type AlgorithmType = "FCFS" | "SJF" | "Priority" | "RoundRobin";

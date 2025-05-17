@@ -1,4 +1,3 @@
-// src/lib/algorithms/fcfs.ts
 import type { Process, ExecutionStep } from "../types";
 
 export function simulateFCFS(processes: Process[]): ExecutionStep[] {
@@ -47,7 +46,16 @@ export function simulateFCFS(processes: Process[]): ExecutionStep[] {
       currentProcess.startTime = currentTime;
     }
 
-    // Jalankan proses hingga selesai
+    // Jalankan proses hingga selesai, tambahkan step untuk setiap unit waktu
+    for (let t = 0; t < currentProcess.burstTime; t++) {
+      steps.push({
+        time: currentTime + t,
+        runningProcess: { ...currentProcess },
+        readyQueue: [...ready],
+        completedProcesses: [...completed],
+      });
+    }
+
     currentTime += currentProcess.burstTime;
     currentProcess.endTime = currentTime;
     currentProcess.turnaroundTime = currentProcess.endTime - currentProcess.arrivalTime;
@@ -55,6 +63,7 @@ export function simulateFCFS(processes: Process[]): ExecutionStep[] {
 
     completed.push(currentProcess);
 
+    // Add final step when the process completes
     steps.push({
       time: currentTime,
       runningProcess: currentProcess,

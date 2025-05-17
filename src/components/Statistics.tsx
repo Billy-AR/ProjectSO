@@ -114,7 +114,20 @@ export default function Statistics({ executionSteps }: StatisticsProps) {
               <BarChart data={stats.chartData} layout="vertical" margin={{ top: 5, right: 30, left: 20, bottom: 5 }}>
                 <XAxis type="number" />
                 <YAxis dataKey="name" type="category" tick={{ fontSize: 12 }} width={50} />
-                <Tooltip contentStyle={{ backgroundColor: "rgba(23, 23, 23, 0.9)", borderColor: "rgba(63, 63, 70, 0.5)" }} labelStyle={{ fontWeight: "bold" }} />
+                <Tooltip
+                  contentStyle={{
+                    backgroundColor: "rgba(0, 0, 0, 0.6)", // Latar belakang tooltip
+                    borderColor: "rgba(63, 81, 181, 0.8)", // Warna border jika diperlukan
+                    color: "black", // Warna teks tooltip menjadi hitam (atau warna lain yang Anda inginkan)
+                  }}
+                  labelStyle={{
+                    fontWeight: "bold", // Gaya label yang tebal
+                    color: "white", // Ubah warna teks label menjadi kuning
+                  }}
+                  itemStyle={{
+                    color: "white", // Ubah warna teks item di dalam tooltip menjadi putih
+                  }}
+                />
                 <Bar dataKey="waitingTime" name="Waiting Time" stackId="a">
                   {stats.chartData.map((entry, index) => (
                     <Cell key={`cell-${index}`} fill={entry.color} fillOpacity={0.4} />

@@ -1,4 +1,3 @@
-// src/components/Visualization.tsx
 import { useState, useEffect, useRef } from "react";
 import type { ExecutionStep } from "../types/index";
 import { motion, AnimatePresence } from "framer-motion";
@@ -12,7 +11,7 @@ import { Badge } from "./ui/badge";
 interface VisualizationProps {
   executionSteps: ExecutionStep[];
   currentStep: number;
-  setCurrentStep: (step: number | ((prev: number) => number)) => void; // Updated type to accept function
+  setCurrentStep: (step: number | ((prev: number) => number)) => void;
   isSimulating: boolean;
 }
 
@@ -40,6 +39,11 @@ export default function Visualization({ executionSteps, currentStep, setCurrentS
       if (intervalRef.current) clearInterval(intervalRef.current);
     };
   }, [isPlaying, currentStep, executionSteps.length, setCurrentStep, playbackSpeed]);
+
+  // Reset playback state when execution steps change
+  useEffect(() => {
+    setIsPlaying(false);
+  }, [executionSteps]);
 
   if (!isSimulating || executionSteps.length === 0) {
     return (
@@ -82,7 +86,10 @@ export default function Visualization({ executionSteps, currentStep, setCurrentS
                   style={{ backgroundColor: currentState.runningProcess.color }}
                 >
                   <p className="font-semibold text-slate-900">{currentState.runningProcess.name}</p>
-                  <p className="text-xs text-slate-900/80 mt-1">Burst: {currentState.runningProcess.burstTime}</p>
+                  <p className="text-xs text-slate-900/80 mt-1">
+                    Burst: {currentState.runningProcess.burstTime}
+                    {currentState.runningProcess.executeTime !== undefined && ` (Executing: ${currentState.runningProcess.executeTime})`}
+                  </p>
                 </motion.div>
               ) : (
                 <motion.div key="idle" initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }} className="px-4 py-2 rounded-lg bg-muted text-muted-foreground">

@@ -1,4 +1,3 @@
-// src/lib/algorithms/sjf.ts
 import type { Process, ExecutionStep } from "../types";
 
 export function simulateSJF(processes: Process[]): ExecutionStep[] {
@@ -52,7 +51,16 @@ export function simulateSJF(processes: Process[]): ExecutionStep[] {
       currentProcess.startTime = currentTime;
     }
 
-    // Jalankan proses hingga selesai
+    // Jalankan proses hingga selesai, tambahkan step untuk setiap unit waktu
+    for (let t = 0; t < currentProcess.burstTime; t++) {
+      steps.push({
+        time: currentTime + t,
+        runningProcess: { ...currentProcess },
+        readyQueue: [...ready],
+        completedProcesses: [...completed],
+      });
+    }
+
     currentTime += currentProcess.burstTime;
     currentProcess.endTime = currentTime;
     currentProcess.turnaroundTime = currentProcess.endTime - currentProcess.arrivalTime;
@@ -60,6 +68,7 @@ export function simulateSJF(processes: Process[]): ExecutionStep[] {
 
     completed.push(currentProcess);
 
+    // Add final step when the process completes
     steps.push({
       time: currentTime,
       runningProcess: currentProcess,

@@ -1,4 +1,3 @@
-// src/lib/algorithms/roundRobin.ts
 import type { Process, ExecutionStep } from "../types";
 
 export function simulateRoundRobin(processes: Process[], quantum: number): ExecutionStep[] {
@@ -55,6 +54,23 @@ export function simulateRoundRobin(processes: Process[], quantum: number): Execu
 
     // Hitung waktu eksekusi untuk quantum ini
     const executeTime = Math.min(quantum, currentProcess.remainingTime);
+
+    // Jalankan proses untuk setiap unit waktu dalam quantum ini
+    for (let t = 0; t < executeTime; t++) {
+      // Simpan proses yang sedang berjalan untuk visualisasi
+      const runningProcess = {
+        ...currentProcess,
+        executeTime: executeTime, // Tambahkan properti untuk menunjukkan waktu eksekusi di quantum ini
+      };
+
+      steps.push({
+        time: currentTime + t,
+        runningProcess: runningProcess,
+        readyQueue: [...ready],
+        completedProcesses: [...completed],
+      });
+    }
+
     currentTime += executeTime;
     currentProcess.remainingTime -= executeTime;
 
@@ -64,26 +80,29 @@ export function simulateRoundRobin(processes: Process[], quantum: number): Execu
       processIndex++;
     }
 
-    // Simpan proses yang sedang berjalan untuk visualisasi
-    const runningProcess = {
-      ...currentProcess,
-      burstTime: executeTime, // Untuk visualisasi, tunjukkan hanya waktu yang dieksekusi di quantum ini
-    };
-
     // Periksa apakah proses selesai
     if (currentProcess.remainingTime <= 0) {
       currentProcess.endTime = currentTime;
       currentProcess.turnaroundTime = currentProcess.endTime - currentProcess.arrivalTime;
       currentProcess.waitingTime = currentProcess.turnaroundTime - currentProcess.burstTime;
-      completed.push({ ...currentProcess, burstTime: processes.find((p) => p.id === currentProcess.id)!.burstTime });
+      completed.push({
+        ...currentProcess,
+        burstTime: processes.find((p) => p.id === currentProcess.id)!.burstTime,
+      });
     } else {
       // Kembalikan ke ready queue
       ready.push(currentProcess);
     }
 
+    // Add final step for this quantum
+    const finalRunningProcess = {
+      ...currentProcess,
+      executeTime: executeTime,
+    };
+
     steps.push({
       time: currentTime,
-      runningProcess: runningProcess,
+      runningProcess: finalRunningProcess,
       readyQueue: [...ready],
       completedProcesses: [...completed],
     });
