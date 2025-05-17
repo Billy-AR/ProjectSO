@@ -43,7 +43,7 @@ export default function GanttChart({ executionSteps, processes }: GanttChartProp
           });
         }
 
-        currentProcess = step.runningProcess;
+        currentProcess = step.runningProcess as Process; // Type assertion here
         startTime = step.time;
       }
     });
