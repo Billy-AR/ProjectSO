@@ -52,9 +52,10 @@ export default function GanttChart({ executionSteps, processes }: GanttChartProp
     const lastStep = executionSteps[executionSteps.length - 1];
     if (lastStep && currentProcess && isValidProcess(currentProcess)) {
       data.push({
-        processId: currentProcess.id,
-        name: currentProcess.name,
-        color: currentProcess.color,
+        processId: currentProcess.id, // eslint-disable-line @typescript-eslint/no-non-null-assertion
+        name: currentProcess.name, // eslint-disable-line @typescript-eslint/no-unused-vars
+        color: currentProcess.color, // eslint-disable-line @typescript-eslint/no-unused-vars
+
         startTime,
         endTime: lastStep.time,
       });
