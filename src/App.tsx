@@ -81,7 +81,7 @@ export default function App() {
                   <AlgorithmSelector algorithm={algorithm} setAlgorithm={setAlgorithm} quantum={quantum} setQuantum={setQuantum} />
 
                   <div className="mt-6">
-                    <ProcessForm addProcess={addProcess} />
+                    <ProcessForm addProcess={addProcess} algorithm={algorithm} />
                   </div>
                 </CardContent>
               </Card>

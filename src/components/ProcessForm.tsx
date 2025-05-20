@@ -1,6 +1,6 @@
 // src/components/ProcessForm.tsx
 import { useState } from "react";
-import type { Process } from "../types";
+import type { Process, AlgorithmType } from "../types";
 import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Button } from "./ui/button";
@@ -11,9 +11,10 @@ import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from "./ui/t
 
 interface ProcessFormProps {
   addProcess: (process: Process) => void;
+  algorithm: AlgorithmType; // Add this prop to receive the current algorithm
 }
 
-export default function ProcessForm({ addProcess }: ProcessFormProps) {
+export default function ProcessForm({ addProcess, algorithm }: ProcessFormProps) {
   const [name, setName] = useState("");
   const [arrivalTime, setArrivalTime] = useState(0);
   const [burstTime, setBurstTime] = useState(1);
@@ -71,16 +72,19 @@ export default function ProcessForm({ addProcess }: ProcessFormProps) {
           <Input type="number" min="1" value={burstTime} onChange={(e) => setBurstTime(parseInt(e.target.value) || 1)} className="w-full mt-2" />
         </div>
 
-        <div className="space-y-2">
-          <div className="flex justify-between">
-            <Label htmlFor="priority" className="text-sm font-medium">
-              Priority: {priority}
-            </Label>
+        {/* Only show priority input when Priority algorithm is selected */}
+        {algorithm === "Priority" && (
+          <div className="space-y-2">
+            <div className="flex justify-between">
+              <Label htmlFor="priority" className="text-sm font-medium">
+                Priority: {priority}
+              </Label>
+            </div>
+            <Slider id="priority" min={1} max={10} step={1} value={[priority]} onValueChange={(value) => setPriority(value[0])} className="w-full" />
+            <Input type="number" min="1" value={priority} onChange={(e) => setPriority(parseInt(e.target.value) || 1)} className="w-full mt-2" />
+            <p className="text-xs text-muted-foreground mt-1">Lower values indicate higher priority</p>
           </div>
-          <Slider id="priority" min={1} max={10} step={1} value={[priority]} onValueChange={(value) => setPriority(value[0])} className="w-full" />
-          <Input type="number" min="1" value={priority} onChange={(e) => setPriority(parseInt(e.target.value) || 1)} className="w-full mt-2" />
-          <p className="text-xs text-muted-foreground mt-1">Lower values indicate higher priority</p>
-        </div>
+        )}
       </div>
 
       <TooltipProvider>
