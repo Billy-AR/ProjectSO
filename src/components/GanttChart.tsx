@@ -3,7 +3,6 @@
 import { useMemo } from "react";
 import type { ExecutionStep, Process } from "../types/index";
 import { motion } from "framer-motion";
-import { ScrollArea } from "./ui/scroll-area";
 import { Server } from "lucide-react";
 
 // Type guard to ensure object is a Process
