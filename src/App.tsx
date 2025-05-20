@@ -67,7 +67,7 @@ export default function App() {
       <div className="min-h-screen bg-gradient-to-br from-background to-background/80 text-foreground p-4 md:p-6">
         <div className="max-w-7xl mx-auto">
           <header className="flex justify-between items-center mb-8">
-            <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">CPU Process Scheduling Simulator test pull</h1>
+            <h1 className="text-3xl md:text-4xl font-bold bg-clip-text text-transparent bg-gradient-to-r from-primary to-blue-400">CPU Process Scheduling Simulator</h1>
             <ModeToggle />
           </header>
 
@@ -81,7 +81,7 @@ export default function App() {
                   <AlgorithmSelector algorithm={algorithm} setAlgorithm={setAlgorithm} quantum={quantum} setQuantum={setQuantum} />
 
                   <div className="mt-6">
-                    <ProcessForm addProcess={addProcess} />
+                    <ProcessForm addProcess={addProcess} algorithm={algorithm} />
                   </div>
                 </CardContent>
               </Card>
